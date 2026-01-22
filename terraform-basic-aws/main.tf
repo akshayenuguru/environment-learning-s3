@@ -5,6 +5,11 @@ terraform {
       version = "~> 5.0"
     }
   }
+  backend "s3" {
+    bucket = "akshay-tf-state-bucket"
+    key    = "nginx/terraform.tfstate"
+    region = "us-west-2"
+  }
 }
 
 provider "aws" {
