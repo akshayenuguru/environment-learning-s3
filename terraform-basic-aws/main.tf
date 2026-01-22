@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "akshay-tf-state-bucket"
+    bucket = "akshay-terraform-state-bucket"
     key    = "nginx/terraform.tfstate"
     region = "us-west-2"
   }
