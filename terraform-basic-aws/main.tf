@@ -5,10 +5,12 @@ terraform {
       version = "~> 5.0"
     }
   }
+
   backend "s3" {
     bucket = "akshay-terraform-state-bucket"
     key    = "nginx/terraform.tfstate"
     region = "us-west-2"
+    encrypt = true
   }
 }
 
@@ -18,9 +20,8 @@ provider "aws" {
 
 # Security Group
 resource "aws_security_group" "nginx_sg" {
-  name        = "nginx-sg"
-  description = "HTTP"
-
+  name_prefix = "nginx-sg-"
+  description = "Allow HTTP"
 
   ingress {
     description = "HTTP"
@@ -58,12 +59,12 @@ resource "aws_instance" "nginx" {
   vpc_security_group_ids = [aws_security_group.nginx_sg.id]
 
   user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              amazon-linux-extras install nginx1 -y
-              systemctl start nginx
-              systemctl enable nginx
-              EOF
+    #!/bin/bash
+    yum update -y
+    amazon-linux-extras install nginx1 -y
+    systemctl start nginx
+    systemctl enable nginx
+  EOF
 
   tags = {
     Name = "akshay-practice"
